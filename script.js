@@ -16,7 +16,11 @@ function subtract(num1, num2) {
 }
 
 function divide(num1, num2) {
-    if(num2 == 0) {return 'error'}
+    if(num2 == 0) {
+        clear();
+        return ''
+    }
+
     return num1 / num2
 }
 
@@ -37,6 +41,13 @@ function operationHandler(operation) {
     }
 }
 
+function clear() {
+    firstNum = '';
+    secondNum = undefined;
+    operation = '';
+    display.innerText = '';
+}
+
 function evaluate(num1, num2, operationFunction) {
     firstNum = (operationFunction(num1, num2));
     secondNum = undefined;
@@ -49,7 +60,8 @@ function evaluate(num1, num2, operationFunction) {
 const buttons = document.querySelectorAll('.numpad > .btn');
 const operations = document.querySelectorAll('.operations > .btn');
 const equals = document.querySelector('.equals');
-const clear = document.querySelector('.clear');
+const clearbtn = document.querySelector('.clear');
+const zero = document.querySelector('.zero');
 buttons.forEach(button => {
     button.addEventListener('click', event => {
         console.log(event.target.innerText);
@@ -86,9 +98,20 @@ equals.addEventListener('click', event => {
     evaluate(Number(firstNum), Number(secondNum), operationHandler(operation));
 });
 
-clear.addEventListener('click', event => {
-    firstNum = '';
-    secondNum = undefined;
-    operation = '';
-    display.innerText = '';
+clearbtn.addEventListener('click', clear);
+
+zero.addEventListener('click', event => {
+    if(operation == '') {
+        display.innerText += event.target.innerText;
+        firstNum += (event.target.innerText);
+        console.log('firstNum = ' + firstNum);
+    } else if (secondNum === undefined) {
+        display.innerText += ' ' + event.target.innerText;
+        secondNum = event.target.innerText;
+        console.log('secondNum = ' + secondNum);
+    } else {
+        display.innerText += event.target.innerText;
+        secondNum += event.target.innerText;
+        console.log('secondNum = ' + secondNum);
+    }
 });
